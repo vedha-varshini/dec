@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Information</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 80%; border-collapse: collapse; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Weather Lookup</h1>
+    <form method="POST">
+        <input type="text" name="location" placeholder="Enter location (e.g., New York)" value="{{ request.form.location or 'New York' }}">
+        <input type="submit" value="Get Weather">
+    </form>
+    {% if error %}
+        <p class="error">Error: {{ error }}</p>
+    {% elif data %}
+        <table>
+            <tr><th>Field</th><th>Value</th></tr>
+            <tr><td>Location</td><td>{{ data.location.name|default('N/A') }}</td></tr>
+            <tr><td>Temperature (°C)</td><td>{{ data.temperature|default('N/A') }}</td></tr>
+            <tr><td>Weather</td><td>{{ data.weather_descriptions[0]|default('N/A') }}</td></tr>
+            <tr><td>Humidity (%)</td><td>{{ data.humidity|default('N/A') }}</td></tr>
+            <tr><td>Wind Speed (km/h)</td><td>{{ data.wind_speed|default('N/A') }}</td></tr>
+        </table>
+    {% else %}
+        <p>Enter a location to see the weather.</p>
+    {% endif %}
+</body>
+</html>
