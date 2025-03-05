@@ -1,0 +1,93 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 70%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .weather-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .error {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+        img {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Dashboard</h1>
+
+        <form method="POST" class="form-group">
+            <input type="text" name="city" placeholder="Enter city name (e.g., London)" required>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if error %}
+            <div class="error">
+                <strong>Error:</strong> {{ error }}
+                {% if "401" in error %}
+                    <p>Please check if the API key is valid</p>
+                {% elif "429" in error %}
+                    <p>API rate limit exceeded. Please try again later</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if weather_data and not error %}
+            <div class="weather-info">
+                <h2>{{ weather_data.name }}</h2>
+                <p>Temperature: {{ ((weather_data.main.temp - 32) * 5/9)|round(1) }}°C</p>
+                <p>Feels Like: {{ ((weather_data.main.feels_like - 32) * 5/9)|round(1) }}°C</p>
+                <p>Humidity: {{ weather_data.main.humidity }}%</p>
+                <p>Conditions: {{ weather_data.weather[0].description }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
