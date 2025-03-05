@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IP Geolocation</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 80%; border-collapse: collapse; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>IP Geolocation Lookup</h1>
+    <form method="POST">
+        <input type="text" name="ip" placeholder="Enter IP (leave blank for your IP)" value="{{ request.form.ip or '' }}">
+        <input type="submit" value="Lookup">
+    </form>
+    {% if error %}
+        <p class="error">Error: {{ error }}</p>
+    {% elif data %}
+        <table>
+            <tr><th>Field</th><th>Value</th></tr>
+            <tr><td>IP</td><td>{{ data.ip|default('N/A') }}</td></tr>
+            <tr><td>Country</td><td>{{ data.country|default('N/A') }}</td></tr>
+            <tr><td>Region</td><td>{{ data.region|default('N/A') }}</td></tr>
+            <tr><td>City</td><td>{{ data.city|default('N/A') }}</td></tr>
+            <tr><td>Latitude</td><td>{{ data.latitude|default('N/A') }}</td></tr>
+            <tr><td>Longitude</td><td>{{ data.longitude|default('N/A') }}</td></tr>
+        </table>
+    {% else %}
+        <p>Enter an IP address or submit to see your location.</p>
+    {% endif %}
+</body>
+</html>
