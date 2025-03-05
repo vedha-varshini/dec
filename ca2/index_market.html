@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Market Data</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 80%; border-collapse: collapse; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Stock Market Data (AAPL)</h1>
+    {% if error %}
+        <p class="error">Error: {{ error }}</p>
+    {% elif data|length > 0 %}
+        <table>
+            <tr><th>Date</th><th>Open</th><th>High</th><th>Low</th><th>Close</th></tr>
+            {% for item in data %}
+                <tr>
+                    <td>{{ item.date|default('N/A') }}</td>
+                    <td>{{ item.open|default('N/A') }}</td>
+                    <td>{{ item.high|default('N/A') }}</td>
+                    <td>{{ item.low|default('N/A') }}</td>
+                    <td>{{ item.close|default('N/A') }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No stock data available at this time.</p>
+    {% endif %}
+</body>
+</html>
